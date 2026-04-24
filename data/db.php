@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli("localhost", "root", "root", "note_app");
-if (!$conn) {
-  die(mysqli_error($conn));
+$conn = new mysqli("db", "root", "root", "note_app");
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
 }

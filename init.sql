@@ -1,8 +1,7 @@
--- Create both databases
+
 CREATE DATABASE IF NOT EXISTS note_app;
 CREATE DATABASE IF NOT EXISTS note_app_users;
 
--- Users table
 USE note_app_users;
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -11,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL
 );
 
--- Notes table
+
 USE note_app;
 CREATE TABLE IF NOT EXISTS notes (
   id INT AUTO_INCREMENT PRIMARY KEY,

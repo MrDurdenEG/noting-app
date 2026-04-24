@@ -1,35 +1,52 @@
+# set the version of docker-compose
 version: "3.9"
-
+# define the services
 services:
+  # define the app service (the web server)
   app:
+    # use Dockerfile in the current directory to build the image
     build: .
+    # map port 80 in the container to port 8080 on the host
     ports:
       - "8080:80"
+    # mount the current directory to /var/www/html in the container (to allow live code changes)
     volumes:
       - .:/var/www/html
+    # specify that this app depends on database service
     depends_on:
       - db
+    # restart the container if it fails
     restart: on-failure
-
+  # define the database service
   db:
+    # pull mysql image version 8
     image: mysql:8
+    # set environment variables for mysql root password and database name
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: note_app
+    # mount a volume for mysql data to maintain the data even if the container is removed
+    # mount the init.sql to initialize the database with specified tables and data
     volumes:
       - db_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    # always restart the database if it stops
     restart: always
-
-  phpmyadmin:
+  # define the admin service for database management
+  admin:
+    # pull phpmyadmin image
     image: phpmyadmin
+    # map port 80 in the container to port 1337 on the host
     ports:
-      - "8081:80"
+      - "1337:80"
+    # set environment variables to connect phpmyadmin to the database
     environment:
       PMA_HOST: db
+      # set the root password for phpmyadmin
       MYSQL_ROOT_PASSWORD: root
+      # specify that this admin depends on database service
     depends_on:
       - db
-
+# define a volume for mysql data
 volumes:
   db_data:
